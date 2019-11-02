@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Param, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 import { CreateMinutesDto } from './create-minutes.dto';
 
 interface IMinutes {
@@ -39,10 +39,7 @@ export class MinutesController {
   @Post(':id/minutes')
   create(@Param() params, @Body() createMinutesDto: CreateMinutesDto): object {
     this.peopleToMinutes.get(Number(params.id)).push({
-      date: createMinutesDto.date,
-      nextTime: createMinutesDto.nextTime,
-      followUps: createMinutesDto.followUps,
-      newBusiness: createMinutesDto.newBusiness,
+      ...createMinutesDto,
       id: ++this.maxId,
     });
     return { id: this.maxId };
