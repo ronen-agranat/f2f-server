@@ -16,31 +16,6 @@ export class MinutesController {
   maxId: number;
 
   constructor() {
-    const admin = require('firebase-admin');
-
-    // TODO create generalised data-store interface and 2 implementations
-
-    // Firebase client
-
-    // TODO: Generalise path to secrets file
-    const serviceAccount = require('/Users/ragranat/face-to-face-firebase-key.json');
-
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    });
-
-    const db = admin.firestore();
-
-    db.collection('minutes').get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          console.log(doc.id, '=>', doc.data());
-        });
-      })
-      .catch((err) => {
-        console.log('Error getting documents from Firebase', err);
-      });
-
     // In-memory client
 
     this.peopleToMinutes = new Map<number, IMinutes[]>();
