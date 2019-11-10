@@ -40,10 +40,14 @@ export class MinutesController {
 
   @Post(':id/minutes')
   create(@Param() params, @Body() createMinutesDto: CreateMinutesDto): object {
-    this.peopleToMinutes.get(Number(params.id)).push({
+    const newMinutes: IMinutes = {
       ...createMinutesDto,
       id: ++this.maxId,
-    });
-    return { id: this.maxId };
+    };
+
+    this.peopleToMinutes.get(Number(params.id)).unshift(newMinutes);
+
+    // Return full object including id
+    return newMinutes;
   }
 }
