@@ -3,4 +3,4 @@ export class CreateMinutesDto {
   readonly newBusiness: 'New business goes here';
   readonly followUps: 'Follow ups go here';
   readonly nextTime: 'Next time goes here';
-}
+};

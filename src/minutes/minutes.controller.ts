@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Put } from '@nestjs/common';
 import { CreateMinutesDto } from './create-minutes.dto';
+import { UpdateMinutesDto } from './update-minutes.dto';
 
 interface IMinutes {
   id: number;
@@ -38,8 +39,24 @@ export class MinutesController {
     return this.peopleToMinutes.get(Number(params.id));
   }
 
+  // TODO: need strong validation for params
+  @Put(':personId/minutes/:minutesId')
+  updateMinutes(@Param() params, @Body() updateMinutesDto: UpdateMinutesDto): void {
+    const minutes = this.peopleToMinutes.get(Number(params.personId));
+
+    const newMinutes = minutes.map((minute) => {
+      if (minute.id === Number(params.minutesId)) {
+        return updateMinutesDto;
+      } else {
+        return minute;
+      }
+    });
+
+    this.peopleToMinutes.set(Number(params.personId), newMinutes);
+  }
+
   @Post(':id/minutes')
-  create(@Param() params, @Body() createMinutesDto: CreateMinutesDto): object {
+  create(@Param() params, @Body() createMinutesDto: CreateMinutesDto): UpdateMinutesDto {
     const newMinutes: IMinutes = {
       ...createMinutesDto,
       id: ++this.maxId,
