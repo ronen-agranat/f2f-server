@@ -1,39 +1,17 @@
 import { Controller, Get, Post, Param, Body } from '@nestjs/common';
-
-interface IPerson {
-  name: string;
-  role: string;
-  id: number;
-}
+import Person from './interfaces/person.interface';
+import PersonService from './person.service';
 
 @Controller('people')
 export class PeopleController {
-  people: Map<number, IPerson>;
+  people: Map<number, Person>;
 
   maxId: number;
 
-  constructor() {
-    const admin = require('firebase-admin');
-
-    // TODO create generalised data-store interface and 2 implementations
-
-    // In-memory client
-
-    this.people = new Map<number, IPerson>();
-
-    this.people.set(1,
-      {
-        id: 1,
-        name: 'Quentin Dale',
-        role: 'Senior data scientist',
-      },
-    );
-
-    this.maxId = 1;
-  }
+  constructor(private readonly personService: PersonService) {}
 
   @Get(':id')
-  detailsForPerson(@Param() params): IPerson {
-    return this.people.get(Number(params.id));
+  detailsForPerson(@Param() params): Person {
+    return this.personService.find(Number(params.id));
   }
 }
