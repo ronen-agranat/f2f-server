@@ -10,4 +10,7 @@ export class Person {
 
   @Column({ length: 500 })
   role: string;
+
+  @Column({ length: 500 })
+  imageUrl: string;
 }

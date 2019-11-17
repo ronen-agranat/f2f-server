@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { Person } from './entities/person.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePersonDto} from './dto/create-person.dto';
+import { UpdatePersonDto } from './dto/update-person.dto';
 
 @Injectable()
 export default class PersonsService {
@@ -19,7 +20,15 @@ export default class PersonsService {
     return this.personRepository.save(person);
   }
 
-  find(personId: number): Promise<Person> {
-    return this.personRepository.findOne({id: personId});
+  async update(id: number, updatePersonDto: UpdatePersonDto): Promise<Person> {
+    const personToUpdate = await this.personRepository.findOne(updatePersonDto.id);
+    personToUpdate.name = updatePersonDto.name;
+    personToUpdate.role = updatePersonDto.role;
+    personToUpdate.imageUrl = updatePersonDto.imageUrl;
+    return this.personRepository.save(personToUpdate);
+  }
+
+  find(id: number): Promise<Person> {
+    return this.personRepository.findOne(id);
   }
 }
