@@ -1,16 +1,15 @@
 import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 import Person from './interfaces/person.interface';
-import PersonService from './person.service';
+import PersonsService from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
-import { CreateMinutesDto } from '../minutes/create-minutes.dto';
 
 @Controller('people')
-export class PeopleController {
+export class PersonsController {
   people: Map<number, Person>;
 
   maxId: number;
 
-  constructor(private readonly personService: PersonService) {}
+  constructor(private readonly personService: PersonsService) {}
 
   @Post(':id')
   createPerson(@Param() params, @Body() createPersonDto: CreatePersonDto): Promise<Person> {

@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Person } from './person.entity';
+import { Person } from './entities/person.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePersonDto} from './dto/create-person.dto';
 
 @Injectable()
-export default class PersonService {
-  private readonly people: Map<number, Person> = new Map<number, Person>();
-  private maxId: number = 1;
-
+export default class PersonsService {
   constructor(
     @InjectRepository(Person)
     private readonly personRepository: Repository<Person>,
