@@ -4,7 +4,7 @@ import PersonsService from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 
-@Controller('people')
+@Controller('persons')
 export class PersonsController {
   constructor(private readonly personService: PersonsService) {}
 
