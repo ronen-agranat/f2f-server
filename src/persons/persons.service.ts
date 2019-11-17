@@ -16,6 +16,7 @@ export default class PersonsService {
     const person = new Person();
     person.name = personDto.name;
     person.role = personDto.role;
+    person.imageUrl = personDto.imageUrl;
 
     return this.personRepository.save(person);
   }
@@ -30,5 +31,9 @@ export default class PersonsService {
 
   find(id: number): Promise<Person> {
     return this.personRepository.findOne(id);
+  }
+
+  all(): Promise<Person[]> {
+    return this.personRepository.find();
   }
 }

@@ -24,7 +24,7 @@ export class PersonsController {
   }
 
   @Get()
-  findAllPersons(@Body() createPersonDto: CreatePersonDto): Promise<Person> {
-    return this.personService.create(createPersonDto);
+  findAllPersons(@Body() createPersonDto: CreatePersonDto): Promise<Person[]> {
+    return this.personService.all();
   }
 }
