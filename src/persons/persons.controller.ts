@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Param, Body, Put } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Put, Delete } from '@nestjs/common';
 import Person from './interfaces/person.interface';
 import PersonsService from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
+import { DeleteResult } from 'typeorm';
 
 @Controller('persons')
 export class PersonsController {
@@ -26,5 +27,11 @@ export class PersonsController {
   @Get()
   findAllPersons(@Body() createPersonDto: CreatePersonDto): Promise<Person[]> {
     return this.personService.all();
+  }
+
+  @Delete(':id')
+  removePerson(@Param() params): Promise<DeleteResult> {
+    // TODO: Don't leak data-store implementation via API
+    return this.personService.remove(Number(params.id));
   }
 }

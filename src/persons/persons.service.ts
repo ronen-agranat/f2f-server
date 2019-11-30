@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { Person } from './entities/person.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePersonDto} from './dto/create-person.dto';
@@ -35,5 +35,9 @@ export default class PersonsService {
 
   all(): Promise<Person[]> {
     return this.personRepository.find();
+  }
+
+  remove(id: number): Promise<DeleteResult> {
+    return this.personRepository.delete(id);
   }
 }
