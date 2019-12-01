@@ -22,7 +22,7 @@ export default class PersonsService {
   }
 
   async update(id: number, updatePersonDto: UpdatePersonDto): Promise<Person> {
-    const personToUpdate = await this.personRepository.findOne(updatePersonDto.id);
+    const personToUpdate = await this.personRepository.findOne(id);
     personToUpdate.name = updatePersonDto.name;
     personToUpdate.role = updatePersonDto.role;
     personToUpdate.imageUrl = updatePersonDto.imageUrl;
