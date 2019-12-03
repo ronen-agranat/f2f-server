@@ -37,7 +37,10 @@ export class MinutesService {
   }
 
   findAllForPerson(personId: number): Promise<Minutes[]> {
-    return this.minutesRepository.find({ where: { personId } });
+    return this.minutesRepository.find({
+      where: { personId },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   all(): Promise<Minutes[]> {
