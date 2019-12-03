@@ -13,4 +13,17 @@ export class Person {
 
   @Column({ length: 500 })
   imageUrl: string;
+
+  @Column('timestamp', {
+    precision: 3,
+    default: () => 'CURRENT_TIMESTAMP(3)',
+    onUpdate: 'CURRENT_TIMESTAMP(3)',
+  })
+  updatedAt: Date;
+
+  @Column('timestamp', {
+    precision: 3,
+    default: () => 'CURRENT_TIMESTAMP(3)',
+  })
+  createdAt: Date;
 }
