@@ -32,7 +32,7 @@ export class MinutesService {
     return this.minutesRepository.save(minutes);
   }
 
-  find(id: number): Promise<Minutes> {
+  findOne(id: number): Promise<Minutes> {
     return this.minutesRepository.findOne(id);
   }
 

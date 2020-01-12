@@ -10,6 +10,11 @@ import { IMinutes } from './interfaces/minutes.interface';
 export class MinutesController {
   constructor(private readonly minutesService: MinutesService) {}
 
+  @Get(':personId/minutes/:minutesId')
+  findOne(@Param() params): Promise<IMinutes> {
+    return this.minutesService.findOne(params.minutesId);
+  }
+
   @Get(':personId/minutes')
   findAll(@Param() params): Promise<IMinutes[]> {
     return this.minutesService.findAllForPerson(params.personId);
