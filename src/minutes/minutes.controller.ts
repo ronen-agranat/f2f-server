@@ -26,6 +26,11 @@ export class MinutesController {
     return this.minutesService.appendFollowUps(Number(params.personId), appendFollowUpsDto.textToAppend);
   }
 
+  @Post(':personId/minutes/latest/next-time/append')
+  appendNextTime(@Param() params, @Body() appendFollowUpsDto: AppendFollowUpsDto): Promise<Minutes> {
+    return this.minutesService.appendNextTime(Number(params.personId), appendFollowUpsDto.textToAppend);
+  }
+
   @Put(':personId/minutes/:minutesId')
   updateMinutes(@Param() params, @Body() updateMinutesDto: UpdateMinutesDto): Promise<Minutes> {
     return this.minutesService.update(params.minutesId, updateMinutesDto);

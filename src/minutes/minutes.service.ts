@@ -65,6 +65,28 @@ export class MinutesService {
     return this.minutesRepository.save(minutes);
   }
 
+  // Add follow-ups to the latest minutes for the person
+  async appendNextTime(personId: number, text: string): Promise<Minutes> {
+    // Find most recent minutes
+    const minutes = await this.minutesRepository.findOne({
+      where: {
+        personId,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    // Bail out if no minutes found
+    if (!minutes) { return null; }
+
+    // Append text to next time
+    minutes.nextTime = minutes.nextTime + '\n' + text;
+
+    // Save and return value
+    return this.minutesRepository.save(minutes);
+  }
+
   all(): Promise<Minutes[]> {
     return this.minutesRepository.find();
   }
