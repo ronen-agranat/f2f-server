@@ -8,7 +8,7 @@
 # username: MySQL username; defaults to 'root'
 #
 
-USERNAME=${1+root}
+USERNAME=$1
 FILENAME="f2f-backup.$(date "+%Y%m%dT%H%M%S").sql"
 
 mysqldump -u$USERNAME f2f > $FILENAME
