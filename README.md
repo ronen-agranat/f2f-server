@@ -1,3 +1,67 @@
+## Face-to-face server
+
+Making great conversations happen
+
+## Getting started
+
+### Set up the data store
+
+1. Create MySQL database, because it won't do this for you (convention)
+
+        create database f2f
+
+2. Create `ormconfig.json` file with MySQL database settings. This is an easy way to set your credentials privately. Be
+sure not to check this file into source control. Sample file:
+
+```
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "MYSQL_USERNAME",
+  "password": "MYSQL_PASSWORD",
+  "database": "f2f",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "synchronize": false,
+  "migrations": ["migration/*{.ts,.js}"],
+  "cli": { "migrationsDir": "migration" }
+}
+```
+
+3. Initialise the database by issuing the migrations so far:
+
+        ts-node ./node_modules/typeorm/cli.js migration:run
+        
+4. Validate set-up by starting server and testing all looks well. Troubleshoot by inspecting DB with `mysql` CLI.
+
+### Back-up datastore
+
+You can issue the following to back-up the data-store using `mysql-dump`
+
+        /bin/db-backup.sh MYSQL_USERNAME
+
+### Creating new migrations
+
+A new migration should be made after every changes to `Entitities`.
+These are generated automatically for you with the following command:
+
+        typeorm migration:generate -n MyMigration
+        
+Then build:
+
+        npm run build
+ 
+Then run as before:
+
+        ts-node ./node_modules/typeorm/cli.js migration:run
+
+### Restoring a back-up
+
+The database back-ups are SQL files that can be edited directly to restore the database
+structure itself, the contents or both.
+
+## NestJS
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
