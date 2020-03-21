@@ -60,6 +60,13 @@ Then run as before:
 The database back-ups are SQL files that can be edited directly to restore the database
 structure itself, the contents or both.
 
+Applying the backup directly will optionally recreate the structure and restore the data
+
+Note that this will also capture the latest state of the migrations. The migrations can be
+edited in the database directly in the `migrations` table.
+
+    cat f2f-backup.20200321T145927.sql | mysql -uroot f2f
+
 ## NestJS
 
 <p align="center">
