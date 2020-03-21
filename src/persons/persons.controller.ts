@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Put, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import Person from './interfaces/person.interface';
 import PersonsService from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -20,8 +20,13 @@ export class PersonsController {
   }
 
   @Get(':id')
-  findOnePerson(@Param() params): Promise<Person> {
-    return this.personService.find(Number(params.id));
+  async findOnePerson(@Param() params): Promise<Person> {
+    const id = Number(params.id);
+    const person = await this.personService.find(id);
+    if (!person) {
+      throw new HttpException(`No person with id ${id}`, HttpStatus.NOT_FOUND);
+    }
+    return person;
   }
 
   @Get()
