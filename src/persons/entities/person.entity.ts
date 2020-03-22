@@ -17,6 +17,9 @@ export class Person {
   @Column({ length: 25 })
   phone: string;
 
+  @Column({ length: 255 })
+  team: string;
+
   @Column('timestamp', {
     precision: 3,
     default: () => 'CURRENT_TIMESTAMP(3)',
