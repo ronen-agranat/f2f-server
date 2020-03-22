@@ -14,6 +14,9 @@ export class Person {
   @Column({ length: 500 })
   imageUrl: string;
 
+  @Column({ length: 25 })
+  phone: string;
+
   @Column('timestamp', {
     precision: 3,
     default: () => 'CURRENT_TIMESTAMP(3)',
