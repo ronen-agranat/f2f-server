@@ -3,4 +3,5 @@ export class CreatePersonDto {
   readonly role: string;
   readonly imageUrl: string;
   readonly phone: string;
+  readonly team: string;
 }
