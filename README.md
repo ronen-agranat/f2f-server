@@ -1,10 +1,29 @@
 ## Face-to-face server
 
-Making great conversations happen
+> Have great conversations
+
+A web app for taking notes, action items and follow-ups during 1-1 meetings.
+
+### Features
+
+- Plain-text note taking with keyboard shortcuts
+- Simple so you can take notes faster
+- Each conversation pulls up previous follow-up items
+- Cross-reference action items in other peoples' one-on-ones
+- Or assign action items to your own agenda
+- Person switcher
+
+### Technology
+
+- React and TypeScript for front-end (`f2f` repo)
+- NestJS and TypeScript for back-end and ORM (`f2f-server` repo)
+- MySQL for data-store (old habits die hard; I'd rather to DB ops on a platform I'm very familiar with)
 
 ## Getting started
 
 ### Set up the data store
+
+This application is tested with MySQL 5.7 and 8.0. **Note: Use legacy authentication mechanism for MySQL 8.0**
 
 1. Create MySQL database, because it won't do this for you (convention)
 
@@ -39,10 +58,12 @@ sure not to check this file into source control. Sample file:
 You can issue the following to back-up the data-store using `mysql-dump`
 
         /bin/db-backup.sh MYSQL_USERNAME
+        
+This produces a mysqldump file in the *local directory*.
 
 ### Creating new migrations
 
-A new migration should be made after every changes to `Entitities`.
+A new migration should be made after every changes to `Entities`.
 These are generated automatically for you with the following command:
 
         typeorm migration:generate -n MyMigration
@@ -62,10 +83,38 @@ structure itself, the contents or both.
 
 Applying the backup directly will optionally recreate the structure and restore the data
 
+First, create the database as above if it does not exist already.
+
+    mysql> create database f2f
+
+    $ cat f2f-backup.20200321T145927.sql | mysql -uroot -p f2f
+    
 Note that this will also capture the latest state of the migrations. The migrations can be
 edited in the database directly in the `migrations` table.
 
-    cat f2f-backup.20200321T145927.sql | mysql -uroot f2f
+## Troubleshooting
+
+### mysql server won't start
+
+> brew services restart mysql
+> mysqld
+
+So your mysql server is crashing. Follow the instructions here:
+https://dev.mysql.com/doc/refman/5.7/en/forcing-innodb-recovery.html
+
+You can create the options file in `~/.my.cnf`
+
+You are likely to be able to recover all your data.
+
+### How to reinstall mysql (OSX)
+
+It can be uninstalled from System Preferences.
+There is a pane called MySQL.
+You can verify the current running status.
+Then you can press 'Uninstall' to remove it completely.
+It can then be reinstalled from binary package.
+I suggest restarting between installing/uninstalling.
+
 
 ## NestJS
 
