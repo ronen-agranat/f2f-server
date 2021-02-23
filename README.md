@@ -49,7 +49,7 @@ sure not to check this file into source control. Sample file:
 
 3. Initialise the database by issuing the migrations so far:
 
-        ts-node ./node_modules/typeorm/cli.js migration:run
+       npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.migration.config
         
 4. Validate set-up by starting server and testing all looks well. Troubleshoot by inspecting DB with `mysql` CLI.
 
@@ -74,7 +74,7 @@ Then build:
  
 Then run as before:
 
-        ts-node ./node_modules/typeorm/cli.js migration:run
+        npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.migration.config
 
 ### Restoring a back-up
 
@@ -115,6 +115,52 @@ Then you can press 'Uninstall' to remove it completely.
 It can then be reinstalled from binary package.
 I suggest restarting between installing/uninstalling.
 
+## AWS configuration
+
+### RDS
+
+**Low-cost dev / trial config**:
+
+Amazon RDS
+
+Standard create
+Engine: MySQL
+Version: MySQL 8.0.20
+Templates: dev/test
+DB instance identifier: f2f-database-1
+Master username: admin
+Master password: MySQL_PASSWORD
+DB instance class: burstable classes, db.t3.micro
+Storage type: magnetic
+Allocated storage: 5 GiB
+Multi-AZ: do not create standby instance
+VPC: create new VPC
+Subnet: Create new DB subnet group
+Public access: yes
+VPC security group: create new
+New VPC security group name: f2f-vpc-security-group
+Database authentication options: Password authentication
+Initial database name: f2f
+DB parameter group: default.mysql8.0
+Option group: default:mysql-8-0
+Backup: Enable automatic backup
+Backup retention period: 7 days
+Backup window: no preference
+Encryption: disable encryption
+Monitoring: disable enhanced monitoring
+Enable auto minor version upgrade
+
+Estimated monthly cost: 13.69 USD
+
+Then add a security group inbound rule to allow access
+
+You then can check mysql access with `mysql` command line tool.
+
+Define the following environment variables:
+
+F2F_DB_USERNAME=<username>
+F2F_DB_PASSWORD=<password>
+F2F_DB_HOSTNAME=<hostname>
 
 ## NestJS
 

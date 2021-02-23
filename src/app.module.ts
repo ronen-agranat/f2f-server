@@ -4,9 +4,16 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PersonsModule } from './persons/persons.module';
 import { MinutesModule } from './minutes/minutes.module';
+import { DatabaseConfig } from './config/database.config';
+// import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [PersonsModule, MinutesModule, TypeOrmModule.forRoot()],
+  imports: [
+    // ConfigModule.forRoot(),
+    PersonsModule,
+    MinutesModule,
+    TypeOrmModule.forRoot(DatabaseConfig)
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
