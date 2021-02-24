@@ -21,6 +21,34 @@ A web app for taking notes, action items and follow-ups during 1-1 meetings.
 
 ## Getting started
 
+### Installing / updating node and npm
+
+#### Versions
+
+        ➜  f2f-server git:(master) ✗ node --version
+        v14.16.0
+        ➜  f2f-server git:(master) ✗ npm --version
+        7.5.6
+
+#### Update Node to latest stable version
+
+    sudo npm install n -g
+    sudo n stable
+
+#### Update npm to latest stable version
+
+    sudo npm install -g npm
+
+#### Be sure to install types for node
+
+    npm i @types/node
+
+#### How to clean
+
+    rm -rf node_modules
+    rm package-lock.json
+    npm install
+
 ### Set up the data store
 
 This application is tested with MySQL 5.7 and 8.0. **Note: Use legacy authentication mechanism for MySQL 8.0**
