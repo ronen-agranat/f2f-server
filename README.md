@@ -117,6 +117,15 @@ I suggest restarting between installing/uninstalling.
 
 ## AWS configuration
 
+Services is hosted as follows:
+
+Cloud provider: AWS
+
+RDS for database (MySQL)
+Lambda for serverless hosting
+CloudFormation for deployment and managing cloud resources
+S3 for object storage
+
 ### RDS
 
 **Low-cost dev / trial config**:
@@ -161,6 +170,10 @@ Define the following environment variables:
 F2F_DB_USERNAME=<username>
 F2F_DB_PASSWORD=<password>
 F2F_DB_HOSTNAME=<hostname>
+
+### AWS Lambda and CloudFormation
+
+As per guide: https://keyholesoftware.com/2019/05/13/aws-lambda-with-nestjs/
 
 ## NestJS
 
