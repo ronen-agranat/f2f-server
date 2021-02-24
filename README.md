@@ -39,10 +39,6 @@ A web app for taking notes, action items and follow-ups during 1-1 meetings.
 
     sudo npm install -g npm
 
-#### Be sure to install types for node
-
-    npm i @types/node
-
 #### How to clean
 
     rm -rf node_modules
