@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "d4b76eb5-4125-42a3-89f6-36810ed4aea5",
+		"name": "f2f",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create person",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"textToAppend\":\"Text to append to follow-ups. Tamzon is a beautiful sheend and tamzon is a beautiful sheen.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/persons/1/minutes/latest/follow-ups/append",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"persons",
+						"1",
+						"minutes",
+						"latest",
+						"follow-ups",
+						"append"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3001/people/1/minutes",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"date\": \"19 October 2019\",\n\t\"newBusiness\": \"New b\",\n\t\"followUps\": \"Follow p\",\n\t\"nextTime\": \"Nex T\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/persons/1/minutes",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"persons",
+						"1",
+						"minutes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update person",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"name\": \"Quentin Daniels\",\n    \"role\": \"Senior data scientist\",\n    \"imageUrl\": \"https://picsum.photos/100/100\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/persons/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"persons",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3001/persons/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/persons/",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"persons",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/persons/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"persons",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -51,25 +51,13 @@ This application is tested with MySQL 5.7 and 8.0. **Note: Use legacy authentica
 
 1. Create MySQL database, because it won't do this for you (convention)
 
-        create database f2f
+        mysql> create database f2f
 
-2. Create `ormconfig.json` file with MySQL database settings. This is an easy way to set your credentials privately. Be
-sure not to check this file into source control. Sample file:
+2. Configure environment variables:
 
-```
-{
-  "type": "mysql",
-  "host": "localhost",
-  "port": 3306,
-  "username": "MYSQL_USERNAME",
-  "password": "MYSQL_PASSWORD",
-  "database": "f2f",
-  "entities": ["dist/**/*.entity{.ts,.js}"],
-  "synchronize": false,
-  "migrations": ["migration/*{.ts,.js}"],
-  "cli": { "migrationsDir": "migration" }
-}
-```
+        F2F_DB_USERNAME
+        F2F_DB_PASSWORD
+        F2F_DB_HOSTNAME
 
 3. Initialise the database by issuing the migrations so far:
 
@@ -198,6 +186,76 @@ F2F_DB_HOSTNAME=<hostname>
 ### AWS Lambda and CloudFormation
 
 As per guide: https://keyholesoftware.com/2019/05/13/aws-lambda-with-nestjs/
+
+`nest-lambda.yaml` contains the CloudFormation template
+`src/lambda-entry-point.ts` creates the application for the Lambda serverless deployment.
+
+#### Ensure AWS CLI is installed
+
+You will then have the `aws` command line utility
+
+Create IAM user in AWS IAM console.
+Retrieve access key and secret key.
+Create `.aws` file in project root containing access key and secret key.
+
+#### Make bucket for CloudFormation materials
+
+Bucket names must be unique over all of S3.
+
+        aws s3 mb s3://ronen-agranat-f2f-test
+        aws s3api put-bucket-lifecycle --bucket s3://ronen-agranat-f2f-test --lifecycle-configuration '{"Rules":[{"Expiration":{"Days":1},"Status":"Enabled","ID":"Delete1DayOld","Prefix":""}]}'
+
+#### Create distribution bundle and deploy
+
+        mkdir deploy
+        npm install
+        npm run build
+        npm prune --production
+        zip -r deploy/nest-lambda.zip dist/ node_modules
+
+        aws cloudformation package --template-file nest-lambda.yaml --s3-bucket s3://ronen-agranat-f2f-test --output-template-file deploy/nest-lambda.out.yaml
+
+        aws cloudformation deploy --template-file deploy/nest-lambda.out.yaml --stack-name nest-lambda --capabilities CAPABILITY_IAM
+
+#### Inspect in AWS console
+
+https://console.aws.amazon.com
+
+Creation of stack and events can be seen in AWS CloudFormation console.
+
+The lambda function which was created can be seen in the AWS Lambda console.
+
+#### Set database environment variables
+
+* Navigate to AWS Lambda console
+* Functions -> nest-lambda-LambdaNestJSFunction-ABCD1234 -> Configuration
+* Environment variables -> Add environment variables
+* Add database variables as per DB config above:
+        * F2F_DB_HOSTNAME
+        * F2F_DB_PASSWORD
+        * F2F_DB_USERNAME
+
+#### Issue request to server
+
+In AWS Lambda console, navigate to Lambda -> Applications -> nest-lambda -> API endpoint
+This is the endpoint for the serverless Lambda application.
+
+Convention is then to indicate the stage e.g. `Prod` for production.
+
+Sample endpoint:
+`https://dghyd9lb0d.execute-api.eu-west-1.amazonaws.com/Prod`
+
+Sample URL:
+`https://dghyd9lb0d.execute-api.eu-west-1.amazonaws.com/Prod/persons`
+To show the persons; this can simply be `curl`ed or opened in the browser.
+Alternatively, you can use HTTPie as the recommended HTTP CLI client.
+
+#### Issue requests with Postman
+
+You can also use a UI to issue requests against the endpoint.
+A collection of sample requests is included in the project in the `/postman` dir.
+These can be imported to Postman.
+Then update the relevant URLs to reflect the endpoint as above.
 
 ## NestJS
 
