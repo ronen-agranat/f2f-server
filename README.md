@@ -29,6 +29,34 @@ A web app for taking notes, action items and follow-ups during 1-1 meetings.
         v14.16.0
         ➜  f2f-server git:(master) ✗ npm --version
         7.5.6
+        ➜  f2f-server git:(master) ✗ nest --version
+        7.5.6
+
+```
+➜  f2f-server git:(master) ✗ nest info
+
+ _   _             _      ___  _____  _____  _     _____
+| \ | |           | |    |_  |/  ___|/  __ \| |   |_   _|
+|  \| |  ___  ___ | |_     | |\ `--. | /  \/| |     | |
+| . ` | / _ \/ __|| __|    | | `--. \| |    | |     | |
+| |\  ||  __/\__ \| |_ /\__/ //\__/ /| \__/\| |_____| |_
+\_| \_/ \___||___/ \__|\____/ \____/  \____/\_____/\___/
+
+
+[System Information]
+OS Version     : macOS Sierra
+NodeJS Version : v14.16.0
+NPM Version    : 7.5.6 
+
+[Nest CLI]
+Nest CLI Version : 7.5.6 
+
+[Nest Platform Information]
+platform-express version : 7.5.6
+typeorm version          : 7.1.5
+common version           : 7.5.6
+core version             : 7.5.6
+```
 
 #### Update Node to latest stable version
 
@@ -38,6 +66,32 @@ A web app for taking notes, action items and follow-ups during 1-1 meetings.
 #### Update npm to latest stable version
 
     sudo npm install -g npm
+
+#### Update nest CLI to latest stable version
+
+Many of the build commands are running nest CLI under the hood (you can see these in package.json)
+
+Update the CLI:
+        npm install -g @nestjs/cli
+
+#### Update NestJS to latest version
+
+The offical instruction is:
+
+        nest update
+
+or
+
+        nest update -f
+
+However, these didn't work for me; had to update the following packages in package.json manually:
+
+        "@nestjs/common": "^7.5.6",
+        "@nestjs/core": "^7.5.6",
+        "@nestjs/platform-express": "^7.5.6",
+        "@nestjs/typeorm": "^7.1.5",
+
+Tips: commit as soon as you reach working state; don't be shy to clean if things get into a weird state and checkout last working `package.json`. Be sure to test application in dev and production modes to confirm working state.
 
 #### How to clean
 
