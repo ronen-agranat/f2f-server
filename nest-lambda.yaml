@@ -20,8 +20,8 @@ Resources:
             Method: any
 
 Outputs:
-  LambdaSpringBootApi:
-    Description: URL for application
-    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/languages'
+  LambdaNestApi:
+    Description: Application endpoint
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
     Export:
       Name: LambdaNestApi

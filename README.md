@@ -198,6 +198,12 @@ Create IAM user in AWS IAM console.
 Retrieve access key and secret key.
 Create `.aws` file in project root containing access key and secret key.
 
+```
+[default]
+aws_access_key_id = ...
+aws_secret_access_key = ...
+```
+
 #### Make bucket for CloudFormation materials
 
 Bucket names must be unique over all of S3.
@@ -207,10 +213,18 @@ Bucket names must be unique over all of S3.
 
 #### Create distribution bundle and deploy
 
-        mkdir deploy
-        npm install
+        mkdir deploy # Only needed once
+        npm install # Only needed if packages change
         npm run build
         npm prune --production
+
+        # Test all is well
+        nest start
+        # ctrl-c
+
+        # Remove old distribute if exists
+        rm deploy/nest-lambda.zip
+        # Create the distributable
         zip -r deploy/nest-lambda.zip dist/ node_modules
 
         aws cloudformation package --template-file nest-lambda.yaml --s3-bucket s3://ronen-agranat-f2f-test --output-template-file deploy/nest-lambda.out.yaml
@@ -225,6 +239,9 @@ Creation of stack and events can be seen in AWS CloudFormation console.
 
 The lambda function which was created can be seen in the AWS Lambda console.
 
+The appropriate API and methods will appear in the AWS Gateway console.
+It appears as {proxy+} due to the configuration being used here.
+
 #### Set database environment variables
 
 * Navigate to AWS Lambda console
@@ -234,6 +251,16 @@ The lambda function which was created can be seen in the AWS Lambda console.
         * F2F_DB_HOSTNAME
         * F2F_DB_PASSWORD
         * F2F_DB_USERNAME
+* *These settings will be retained even after applying further CloudFormation updates*
+
+#### CORS support
+
+CORS is enabled through the following line in `src/lambda-entry-point.ts`:
+
+    // Enable CORS
+    nestApp.enableCors();
+
+Note that CORS is specifically *not* enabled through the AWS Gateway console, and attempting to enable through AWS Gateway (Action -> Enable CORS) will result in an error. This is due to the configuration being used here.
 
 #### Issue request to server
 
@@ -300,6 +327,9 @@ $ npm install
 ```bash
 # development
 $ npm run start
+
+# alternatively:
+$ nest start
 
 # watch mode
 $ npm run start:dev

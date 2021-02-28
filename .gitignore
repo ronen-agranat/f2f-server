@@ -37,3 +37,7 @@ lerna-debug.log*
 ormconfig.json
 
 .gitconfig
+deploy/nest-lambda.zip
+deploy/nest-lambda.out.yaml
+.env
+.aws
