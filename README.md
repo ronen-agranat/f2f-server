@@ -270,7 +270,10 @@ The environment to use is specified via the `F2F_SERVER_ENVIRONMENT` which is it
 
         F2F_SERVER_ENVIRONMENT=production nest start
 
-This enables you to quickly switch between different environments when working locally.
+This *optiional convenience feature* enables you to quickly switch between different environments when working locally, if you so choose.
+Of course, if these environment variables are specified some other way, this can be omitted completely.
+
+Above all, never submit creds into VCS.
 
 **The default environment is `development`**.
 
