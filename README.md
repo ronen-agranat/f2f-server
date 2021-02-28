@@ -269,8 +269,10 @@ Bucket names must be unique over all of S3.
 
         mkdir deploy # Only needed once
         npm install # Only needed if packages change
-        npm run build
+        nest build
         npm prune --production
+
+        # Important: Should show 0 vulnerabilities!
 
         # Test all is well
         nest start
@@ -281,7 +283,7 @@ Bucket names must be unique over all of S3.
         # Create the distributable
         zip -r deploy/nest-lambda.zip dist/ node_modules
 
-        aws cloudformation package --template-file nest-lambda.yaml --s3-bucket s3://ronen-agranat-f2f-test --output-template-file deploy/nest-lambda.out.yaml
+        aws cloudformation package --template-file nest-lambda.yaml --s3-bucket ronen-agranat-f2f-test --output-template-file deploy/nest-lambda.out.yaml
 
         aws cloudformation deploy --template-file deploy/nest-lambda.out.yaml --stack-name nest-lambda --capabilities CAPABILITY_IAM
 
