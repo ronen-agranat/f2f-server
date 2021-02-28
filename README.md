@@ -231,11 +231,52 @@ Then add a security group inbound rule to allow access
 
 You then can check mysql access with `mysql` command line tool.
 
+#### Use native MySQL 8.0 authentication
+
+MySQL 8.0 introduces a new authentication scheme called 'caching_sha2_password'.
+Unfortunately, it is not supported by NodeJS.
+
+This results in an error like:
+
+        Error: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; consider upgrading MySQL client
+
+Switch back to MySQL native password scheme as follows:
+
+        alter user admin identified with mysql_native_password by 'plaintext_password';
+
+#### Define environment variables
+
+* Create the following files in the project root directory:
+
+        .development.env
+        .production.env
+
 Define the following environment variables:
 
-F2F_DB_USERNAME=<username>
-F2F_DB_PASSWORD=<password>
-F2F_DB_HOSTNAME=<hostname>
+        F2F_DB_USERNAME=<username>
+        F2F_DB_PASSWORD=<password>
+        F2F_DB_HOSTNAME=<hostname>
+
+This enables you to specify different environments; e.g. development, test, production.
+For example, place your local database configuration into the `.development.env` environment like so:
+
+        F2F_DB_USERNAME=root
+        F2F_DB_PASSWORD=<the password>
+        F2F_DB_HOSTNAME=localhost
+
+This is powered using `dotenv`.
+
+The environment to use is specified via the `F2F_SERVER_ENVIRONMENT` which is itself an environment variable, which you can specify as part of the incantation when starting the application as follows:
+
+        F2F_SERVER_ENVIRONMENT=production nest start
+
+This enables you to quickly switch between different environments when working locally.
+
+**The default environment is `development`**.
+
+**Note**: `dotenv` will favour actual environment variables over these values specified in the config file.
+So if a variable appears not be updated, ensure it's not being set in the shell environment;
+unset as needed with e.g. `$ unset F2F_DB_USERNAME`
 
 ### AWS Lambda and CloudFormation
 

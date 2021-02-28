@@ -41,3 +41,5 @@ deploy/nest-lambda.zip
 deploy/nest-lambda.out.yaml
 .env
 .aws
+.development.env
+.production.env
