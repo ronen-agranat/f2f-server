@@ -6,11 +6,17 @@ import * as serverlessExpress from 'aws-serverless-express';
 import * as express from 'express';
 import {ExpressAdapter} from '@nestjs/platform-express';
 
+// Create NestJS + Express server for use on AWS Lambda.
+// Note that this is *different* to running the server locally,
+// which is done in `main.ts`
+
 let lambdaProxy: Server;
 
 async function bootstrap() {
     const expressServer = express();
     const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressServer));
+    // Enable CORS
+    nestApp.enableCors();
     await nestApp.init();
 
     return serverlessExpress.createServer(expressServer);
