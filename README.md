@@ -107,16 +107,20 @@ This application is tested with MySQL 5.7 and 8.0. **Note: Use legacy authentica
 
         mysql> create database f2f
 
-2. Configure environment variables:
+2. Create file in project root called `.dev.env` and set environment variables for DB, e.g.:
 
-        F2F_DB_USERNAME
-        F2F_DB_PASSWORD
-        F2F_DB_HOSTNAME
+        TYPEORM_USERNAME=root
+        TYPEORM_PASSWORD=<db_password>
+        TYPEORM_HOST=localhost
 
 3. Initialise the database by issuing the migrations so far:
 
-       npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.migration.config
+       npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.config
         
+How to run conveniently run migrations in production:
+
+        F2F_SERVER_ENVIRONMENT=production npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.migration.config
+
 4. Validate set-up by starting server and testing all looks well. Troubleshoot by inspecting DB with `mysql` CLI.
 
 ### Back-up datastore
@@ -140,7 +144,7 @@ Then build:
  
 Then run as before:
 
-        npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.migration.config
+        npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.config
 
 ### Restoring a back-up
 
@@ -244,42 +248,39 @@ Switch back to MySQL native password scheme as follows:
 
         alter user admin identified with mysql_native_password by 'plaintext_password';
 
-#### Define environment variables
+#### Define environments and environment variables
 
 * Create the following files in the project root directory:
 
-        .development.env
-        .production.env
+        .dev.env
+        .prod.env
+
+And so forth
 
 Define the following environment variables:
 
-        F2F_DB_USERNAME=<username>
-        F2F_DB_PASSWORD=<password>
-        F2F_DB_HOSTNAME=<hostname>
+        TYPEORM_USERNAME=<username>
+        TYPEORM_PASSWORD=<password>
+        TYPEORM_HOST=<hostname>
 
 This enables you to specify different environments; e.g. development, test, production.
-For example, place your local database configuration into the `.development.env` environment like so:
-
-        F2F_DB_USERNAME=root
-        F2F_DB_PASSWORD=<the password>
-        F2F_DB_HOSTNAME=localhost
 
 This is powered using `dotenv`.
 
-The environment to use is specified via the `F2F_SERVER_ENVIRONMENT` which is itself an environment variable, which you can specify as part of the incantation when starting the application as follows:
+The environment to use is specified via the `NODE_ENV` which is itself an environment variable, which you can specify as part of the incantation when starting the application as follows:
 
-        F2F_SERVER_ENVIRONMENT=production nest start
+        NODE_ENV=prod nest start
 
-This *optiional convenience feature* enables you to quickly switch between different environments when working locally, if you so choose.
-Of course, if these environment variables are specified some other way, this can be omitted completely.
+This works for running the application as well as for running migrations, with a single, simple config.
 
-Above all, never submit creds into VCS.
-
-**The default environment is `development`**.
+**The default environment is `dev`**.
 
 **Note**: `dotenv` will favour actual environment variables over these values specified in the config file.
-So if a variable appears not be updated, ensure it's not being set in the shell environment;
-unset as needed with e.g. `$ unset F2F_DB_USERNAME`
+So if a variable appears not be updated, ensure it's not being set in the shell environment e.g. `$ unset  VAR`
+
+### Run migrations against production DB
+
+        NODE_ENV=prod npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.config
 
 ### AWS Lambda and CloudFormation
 
