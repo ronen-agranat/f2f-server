@@ -312,7 +312,14 @@ Bucket names must be unique over all of S3.
 
 #### Create distribution bundle and deploy
 
+Run the following script to deploy:
+
+        ./bin/deploy.sh
+
+Which does the following:
+
         mkdir deploy # Only needed once
+
         npm install # Only needed if packages change
         nest build
         npm prune --production
