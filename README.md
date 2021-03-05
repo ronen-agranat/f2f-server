@@ -119,7 +119,7 @@ This application is tested with MySQL 5.7 and 8.0. **Note: Use legacy authentica
         
 How to run conveniently run migrations in production:
 
-        F2F_SERVER_ENVIRONMENT=production npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.migration.config
+        NODE_ENV=production npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.migration.config
 
 4. Validate set-up by starting server and testing all looks well. Troubleshoot by inspecting DB with `mysql` CLI.
 
@@ -262,6 +262,7 @@ Define the following environment variables:
         TYPEORM_USERNAME=<username>
         TYPEORM_PASSWORD=<password>
         TYPEORM_HOST=<hostname>
+        JWT_SECRET=<secret_for_passport_jwt>
 
 This enables you to specify different environments; e.g. development, test, production.
 
