@@ -43,3 +43,5 @@ deploy/nest-lambda.out.yaml
 .aws
 .development.env
 .production.env
+.dev.env
+.prod.env

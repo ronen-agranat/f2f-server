@@ -246,7 +246,7 @@ This results in an error like:
 
 Switch back to MySQL native password scheme as follows:
 
-        alter user admin identified with mysql_native_password by 'plaintext_password';
+        ALTER USER admin IDENTIFIED WITH mysql_native_password BY 'plaintext_password';
 
 #### Define environments and environment variables
 
@@ -323,7 +323,7 @@ Bucket names must be unique over all of S3.
         nest start
         # ctrl-c
 
-        # Remove old distribute if exists
+        # Remove old distributable if exists
         rm deploy/nest-lambda.zip
         # Create the distributable
         zip -r deploy/nest-lambda.zip dist/ node_modules
