@@ -194,6 +194,45 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "POST user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"ronen\",\n    \"password\": \"helloworld\",\n    \"firstName\": \"Ronen\",\n    \"lastName\": \"Agranat\",\n    \"imageUrl\": \"\",\n    \"phone\": \"\",\n    \"email\": \"ronen@example.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/users/",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
 		}
 	]
 }
