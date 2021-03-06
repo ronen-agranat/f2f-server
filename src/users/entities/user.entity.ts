@@ -15,7 +15,7 @@ export class User {
   lastName: string;
 
   @Column({ length: 500 })
-  password: string;
+  hashedPassword: string;
 
   @Column({ length: 500 })
   imageUrl: string;

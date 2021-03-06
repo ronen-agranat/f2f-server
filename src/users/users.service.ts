@@ -18,13 +18,13 @@ export class UsersService {
     user.lastName = userDto.lastName;
     user.imageUrl = userDto.imageUrl;
     user.phone = userDto.phone;
-    user.password = userDto.password;
+    // TODO: hash password
+    // user.password = userDto.password;
 
     return this.userRepository.save(user);
   }
 
   async findOne(username: string): Promise<User | undefined> {
-    // TODO: hash password to find
     return this.userRepository.findOne({ where: { username: username }});
   }
 }
