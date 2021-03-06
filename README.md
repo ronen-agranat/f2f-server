@@ -153,6 +153,34 @@ Run migration:
 
         npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.config
 
+### Authentication
+
+Postman is used to provide authentication and is well-documented in the NestJS docs.
+
+User accounts are stored in the `users` table and entity
+which are governed by the `Users` controller, module and service.
+Hashed passwords are stored and compared using `bcrypt`.
+This is governed by the `auth` service.
+
+Create a user:
+
+    POST user
+
+Authenticate a user:
+
+    POST auth/login
+
+Examples are available in the Postman collection.
+
+On successful authentication, a JSON Web Token is issued (JWT), also known as a 'bearer token',
+which the bearer then provides in the header of future requests. This can be seen in requesting
+the `/profile` page, where the bearer token must be provided in order to access the user profile.
+This is also illustrated in the Postman collection.
+
+Note that these bearer tokens expire; the expiry time can be adjusted.
+
+Note: Never store plaintext passwords. Never share password hashes.
+
 ### Restoring a back-up
 
 The database back-ups are SQL files that can be edited directly to restore the database
