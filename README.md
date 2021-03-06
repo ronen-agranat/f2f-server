@@ -133,16 +133,23 @@ This produces a mysqldump file in the *local directory*.
 
 ### Creating new migrations
 
-A new migration should be made after every changes to `Entities`.
+A new migration should be made after every changes to `Entities`;
+for example, after creating a new `Entity`.
 These are generated automatically for you with the following command:
 
-        typeorm migration:generate -n MyMigration
-        
-Then build:
+Build entities:
 
-        npm run build
+        nest build
+
+Generate migration:
+
+        npx ts-node ./node_modules/typeorm/cli.js migration:generate -n MyMigration --config src/config/database.config
  
-Then run as before:
+Build migration:
+
+        nest build
+
+Run migration:
 
         npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.config
 
