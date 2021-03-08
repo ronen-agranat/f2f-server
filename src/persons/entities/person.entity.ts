@@ -20,6 +20,7 @@ export class Person {
   @Column({ length: 255 })
   team: string;
 
+  // TODO: nicer way to do this now in latest typeorm
   @Column('timestamp', {
     precision: 3,
     default: () => 'CURRENT_TIMESTAMP(3)',
