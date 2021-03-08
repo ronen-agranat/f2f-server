@@ -1,4 +1,4 @@
-export class CreateUserDto {
+export class UpdateUserDto {
   readonly id: number;
   readonly username: string;
 
@@ -6,7 +6,4 @@ export class CreateUserDto {
   readonly imageUrl: string;
   readonly email: string;
   readonly phone: string;
-
-  // Do not store or share plaintext password!
-  readonly password: string;
 }
