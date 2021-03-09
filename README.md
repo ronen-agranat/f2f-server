@@ -21,107 +21,48 @@ A web app for taking notes, action items and follow-ups during 1-1 meetings.
 
 ## Getting started
 
-### Installing / updating node and npm
+### Install node
 
-#### Versions
+https://nodejs.org/en/download/
 
-        ➜  f2f-server git:(master) ✗ node --version
-        v14.16.0
-        ➜  f2f-server git:(master) ✗ npm --version
-        7.5.6
-        ➜  f2f-server git:(master) ✗ nest --version
-        7.5.6
+### Install nest CLI
 
-```
-➜  f2f-server git:(master) ✗ nest info
-
- _   _             _      ___  _____  _____  _     _____
-| \ | |           | |    |_  |/  ___|/  __ \| |   |_   _|
-|  \| |  ___  ___ | |_     | |\ `--. | /  \/| |     | |
-| . ` | / _ \/ __|| __|    | | `--. \| |    | |     | |
-| |\  ||  __/\__ \| |_ /\__/ //\__/ /| \__/\| |_____| |_
-\_| \_/ \___||___/ \__|\____/ \____/  \____/\_____/\___/
-
-
-[System Information]
-OS Version     : macOS Sierra
-NodeJS Version : v14.16.0
-NPM Version    : 7.5.6 
-
-[Nest CLI]
-Nest CLI Version : 7.5.6 
-
-[Nest Platform Information]
-platform-express version : 7.5.6
-typeorm version          : 7.1.5
-common version           : 7.5.6
-core version             : 7.5.6
-```
-
-#### Update Node to latest stable version
-
-    sudo npm install n -g
-    sudo n stable
-
-#### Update npm to latest stable version
-
-    sudo npm install -g npm
-
-#### Update nest CLI to latest stable version
-
-Many of the build commands are running nest CLI under the hood (you can see these in package.json)
-
-Update the CLI:
         npm install -g @nestjs/cli
 
-#### Update NestJS to latest version
+### Install MySQL
 
-The offical instruction is:
+https://dev.mysql.com/downloads/mysql/
 
-        nest update
-
-or
-
-        nest update -f
-
-However, these didn't work for me; had to update the following packages in package.json manually:
-
-        "@nestjs/common": "^7.5.6",
-        "@nestjs/core": "^7.5.6",
-        "@nestjs/platform-express": "^7.5.6",
-        "@nestjs/typeorm": "^7.1.5",
-
-Tips: commit as soon as you reach working state; don't be shy to clean if things get into a weird state and checkout last working `package.json`. Be sure to test application in dev and production modes to confirm working state.
-
-#### How to clean
-
-    rm -rf node_modules
-    rm package-lock.json
-    npm install
-
-### Set up the data store
+Add MySQL bin directory to path.
 
 This application is tested with MySQL 5.7 and 8.0. **Note: Use legacy authentication mechanism for MySQL 8.0**
 
-1. Create MySQL database, because it won't do this for you (convention)
+### Create database
 
-        mysql> create database f2f
+Create MySQL database
 
-2. Create file in project root called `.dev.env` and set environment variables for DB, e.g.:
+        $ mysql -uroot -p
+        mysql> create database f2f;
+
+### Set up local environment
+
+Create file in project root called `.dev.env` and set environment variables for DB, e.g.:
 
         TYPEORM_USERNAME=root
         TYPEORM_PASSWORD=<db_password>
         TYPEORM_HOST=localhost
+        JWT_SECRET=<secret_for_passport_jwt>
 
-3. Initialise the database by issuing the migrations so far:
 
-       npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.config
-        
-How to run conveniently run migrations in production:
+### Create DB schema
 
-        NODE_ENV=production npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.migration.config
+        nest build
 
-4. Validate set-up by starting server and testing all looks well. Troubleshoot by inspecting DB with `mysql` CLI.
+        npx ts-node ./node_modules/typeorm/cli.js migration:run --config src/config/database.config
+
+### Start server
+
+        nest start
 
 ### Back-up datastore
 
@@ -237,32 +178,32 @@ S3 for object storage
 
 Amazon RDS
 
-Standard create
-Engine: MySQL
-Version: MySQL 8.0.20
-Templates: dev/test
-DB instance identifier: f2f-database-1
-Master username: admin
-Master password: MySQL_PASSWORD
-DB instance class: burstable classes, db.t3.micro
-Storage type: magnetic
-Allocated storage: 5 GiB
-Multi-AZ: do not create standby instance
-VPC: create new VPC
-Subnet: Create new DB subnet group
-Public access: yes
-VPC security group: create new
-New VPC security group name: f2f-vpc-security-group
-Database authentication options: Password authentication
-Initial database name: f2f
-DB parameter group: default.mysql8.0
-Option group: default:mysql-8-0
-Backup: Enable automatic backup
-Backup retention period: 7 days
-Backup window: no preference
-Encryption: disable encryption
-Monitoring: disable enhanced monitoring
-Enable auto minor version upgrade
+- Standard create
+- Engine: MySQL
+- Version: MySQL 8.0.20
+- Templates: dev/test
+- DB instance identifier: f2f-database-1
+- Master username: admin
+- Master password: MySQL_PASSWORD
+- DB instance class: burstable classes, db.t3.micro
+- Storage type: magnetic
+- Allocated storage: 5 GiB
+- Multi-AZ: do not create standby instance
+- VPC: create new VPC
+- Subnet: Create new DB subnet group
+- Public access: yes
+- VPC security group: create new
+- New VPC security group name: f2f-vpc-security-group
+- Database authentication options: Password authentication
+- Initial database name: f2f
+- DB parameter group: default.mysql8.0
+- Option group: default:mysql-8-0
+- Backup: Enable automatic backup
+- Backup retention period: 7 days
+- Backup window: no preference
+- Encryption: disable encryption
+- Monitoring: disable enhanced monitoring
+- Enable auto minor version upgrade
 
 Estimated monthly cost: 13.69 USD
 
@@ -508,3 +449,39 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
   Nest is [MIT licensed](LICENSE).
+
+## Updating
+
+#### Update Node to latest stable version
+
+    sudo npm install n -g
+    sudo n stable
+
+#### Update npm to latest stable version
+
+    sudo npm install -g npm
+
+#### Update NestJS project dependencies to latest version
+
+The offical instruction is:
+
+        nest update
+
+or
+
+        nest update -f
+
+However, these didn't work for me; had to update the following packages in package.json manually:
+
+        "@nestjs/common": "^7.5.6",
+        "@nestjs/core": "^7.5.6",
+        "@nestjs/platform-express": "^7.5.6",
+        "@nestjs/typeorm": "^7.1.5",
+
+Tips: commit as soon as you reach working state; don't be shy to clean if things get into a weird state and checkout last working `package.json`. Be sure to test application in dev and production modes to confirm working state.
+
+#### How to clean
+
+    rm -rf node_modules
+    rm package-lock.json
+    npm install
