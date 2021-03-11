@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d4b76eb5-4125-42a3-89f6-36810ed4aea5",
+		"_postman_id": "6712e68a-378d-445a-af1b-02227915b002",
 		"name": "f2f",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -155,15 +155,12 @@
 		},
 		{
 			"name": "Auth login",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"john\",\n    \"password\": \"changeme\"\n}",
+					"raw": "{\n    \"username\": \"ronen\",\n    \"password\": \"helloworld\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

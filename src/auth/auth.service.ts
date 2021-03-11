@@ -17,7 +17,12 @@ export class AuthService {
   async login(user: User) {
     // Payload contains claims about the user we want to verify.
     // `sub` is short for `subject` (JWT is meant to be short) and is the id.
-    const payload = { username: user.username, sub: user.id, name: user.name };
+    const payload = {
+      username: user.username,
+      sub: user.id,
+      name: user.name,
+      isAdmin: user.isAdmin
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };

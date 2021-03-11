@@ -24,6 +24,9 @@ export class User {
   @Column({ length: 25, nullable: true })
   phone: string;
 
+  @Column()
+  isAdmin: boolean = false;
+
   @CreateDateColumn()
   updatedAt: Date;
 
