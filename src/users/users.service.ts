@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -37,8 +37,12 @@ export class UsersService {
     return newUser;
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    const user = await this.userRepository.findOne({ where: { username: username }});
+  async findOne(id: number): Promise<User | undefined> {
+    const user = await this.userRepository.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException(`No user with id ${id}`);
+    }
 
     // Hashed password never leaves here
     delete user.hashedPassword

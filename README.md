@@ -53,7 +53,6 @@ Create file in project root called `.dev.env` and set environment variables for 
         TYPEORM_HOST=localhost
         JWT_SECRET=<secret_for_passport_jwt>
 
-
 ### Create DB schema
 
         nest build
@@ -64,13 +63,45 @@ Create file in project root called `.dev.env` and set environment variables for 
 
         nest start
 
-### Back-up datastore
+### Create user
 
-You can issue the following to back-up the data-store using `mysql-dump`
+Can be done through UI. Alternatively, issue:
 
-        /bin/db-backup.sh MYSQL_USERNAME
-        
-This produces a mysqldump file in the *local directory*.
+        POST /users/
+
+With body like:
+
+```
+{
+    "username": "ronen",
+    "password": "helloworld",
+    "name": "Ronen Agranat",
+    "email": "ronen@example.com"
+}
+```
+
+*See Postman collection*
+
+### Log in user
+
+Can be done through UI. Alternatively, issue:
+
+        POST /auth/login
+
+With body like:
+
+```
+{
+        "username": "ronen",
+        "password": "helloworld"
+}
+```
+
+*See Postman collection*
+
+This returns `access_token`, to be included in future requests as a header like:
+
+        Authorization: Bearer 123456789abcdef...
 
 ### Creating new migrations
 
@@ -84,7 +115,7 @@ Build entities:
 
 Generate migration:
 
-        npx ts-node ./node_modules/typeorm/cli.js migration:generate -n MyMigration --config src/config/database.config
+        npx ts-node ./node_modules/typeorm/cli.js migration:generate --config src/config/database.config -n MyMigration
  
 Build migration:
 

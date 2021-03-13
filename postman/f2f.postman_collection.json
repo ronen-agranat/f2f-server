@@ -185,9 +185,22 @@
 			"name": "GET profile",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbmVuIiwic3ViIjoxLCJuYW1lIjoiUm9uZW4gQWdyYW5hdCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MTU2NzM3MzYsImV4cCI6MTYxNTcwMjUzNn0.x2fcJjEOSBRILWG8k8c8r7OGoWouaExt4_R47ABiiPs",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": ""
+					"raw": "localhost:3001/profile",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"profile"
+					]
 				}
 			},
 			"response": []
