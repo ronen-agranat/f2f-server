@@ -103,6 +103,12 @@ This returns `access_token`, to be included in future requests as a header like:
 
         Authorization: Bearer 123456789abcdef...
 
+### Set user as admin user
+
+Must be done directly through DB
+
+        mysql> UPDATE user SET isAdmin = 1 WHERE id = 1;
+
 ### Creating new migrations
 
 A new migration should be made after every changes to `Entities`;
