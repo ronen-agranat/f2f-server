@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { Person } from './entities/person.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,7 +12,7 @@ export class PersonsService {
     private readonly personRepository: Repository<Person>,
   ) {}
 
-  create(personDto: CreatePersonDto): Promise<Person> {
+  create(personDto: CreatePersonDto, userId: number): Promise<Person> {
     const person = new Person();
     person.name = personDto.name;
     person.role = personDto.role;
@@ -20,12 +20,20 @@ export class PersonsService {
     person.phone = personDto.phone;
     person.team = personDto.team;
 
+    // Associate person with logged-in user
+    person.userId = userId;
+
     return this.personRepository.save(person);
   }
 
-  async update(id: number, updatePersonDto: UpdatePersonDto): Promise<Person> {
+  async update(id: number, updatePersonDto: UpdatePersonDto, userId: number): Promise<Person> {
     const person = await this.personRepository.findOne(id);
-    // FIXME: Similar and repeated code to the above
+
+    // User can only update persons associated with them
+    if (person.userId !== userId) {
+      throw new ForbiddenException();
+    }
+
     person.name = updatePersonDto.name;
     person.role = updatePersonDto.role;
     person.imageUrl = updatePersonDto.imageUrl;
@@ -38,11 +46,13 @@ export class PersonsService {
     return this.personRepository.findOne(id);
   }
 
-  all(): Promise<Person[]> {
-    return this.personRepository.find();
+  all(userId: number): Promise<Person[]> {
+    // Results for logged-in user only
+    return this.personRepository.find({where: { userId: userId } });
   }
 
-  remove(id: number): Promise<DeleteResult> {
-    return this.personRepository.delete(id);
+  remove(personId: number, userId: number): Promise<DeleteResult> {
+    // User can delete persons associated with them only
+    return this.personRepository.delete({userId: userId, id: personId });
   }
 }
