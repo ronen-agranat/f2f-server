@@ -15,9 +15,17 @@ export class UsersController {
     return this.userService.create(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
-  updateUser(@Param() params, @Body() updateUserDto: UpdateUserDto): Promise<User> {
-    return this.userService.update(Number(params.id), updateUserDto);
+  updateUser(@Request() req, @Param() params, @Body() updateUserDto: UpdateUserDto): Promise<User> {
+    const userId = Number(params.id);
+
+    // User must be admin or current user to update user
+    if (!req.user.isAdmin && (userId !== req.user.id)) {
+      throw new ForbiddenException();
+    }
+
+    return this.userService.update(userId, updateUserDto);
   }
 
   @UseGuards(JwtAuthGuard)
