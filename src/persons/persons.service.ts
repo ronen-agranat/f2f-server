@@ -6,7 +6,7 @@ import { CreatePersonDto} from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 
 @Injectable()
-export default class PersonsService {
+export class PersonsService {
   constructor(
     @InjectRepository(Person)
     private readonly personRepository: Repository<Person>,

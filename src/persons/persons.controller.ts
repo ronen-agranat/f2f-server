@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Param, Body, Put, Delete, HttpException, HttpStatus } from '@nestjs/common';
-import Person from './interfaces/person.interface';
-import PersonsService from './persons.service';
+import { Person } from './entities/person.entity';
+import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { DeleteResult } from 'typeorm';
