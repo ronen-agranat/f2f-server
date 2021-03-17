@@ -4,21 +4,24 @@ import { Minutes } from './entities/minutes.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateMinutesDto } from './dto/create-minutes.dto';
 import { UpdateMinutesDto } from './dto/update-minutes.dto';
+import { Person } from 'src/persons/entities/person.entity';
 
 @Injectable()
 export class MinutesService {
   constructor(
     @InjectRepository(Minutes)
     private readonly minutesRepository: Repository<Minutes>,
+    @InjectRepository(Person)
+    private readonly personRepository: Repository<Person>
   ) {}
 
-  create(personId: number, minutesDto: CreateMinutesDto): Promise<Minutes> {
+  async create(personId: number, minutesDto: CreateMinutesDto): Promise<Minutes> {
     const minutes = new Minutes();
     minutes.newBusiness = minutesDto.newBusiness;
     minutes.nextTime = minutesDto.nextTime;
     minutes.followUps = minutesDto.followUps;
     minutes.date = minutesDto.date;
-    minutes.personId = personId;
+    minutes.person = personId as any;
 
     return this.minutesRepository.save(minutes);
   }
@@ -37,10 +40,21 @@ export class MinutesService {
   }
 
   findAllForPerson(personId: number): Promise<Minutes[]> {
-    return this.minutesRepository.find({
-      where: { personId },
-      order: { createdAt: 'DESC' },
-    });
+    // Fetch minutes for person with minutes ordered by created date.
+    // Wow, this is not pretty.
+    // This is the best way to query a relation and have the relation be sorted.
+    // Feature request open here: https://github.com/typeorm/typeorm/issues/2620
+    return this.minutesRepository.createQueryBuilder('minutes')
+      .leftJoinAndSelect(
+        "minutes",
+        "minutes.person",
+        "minutes.person.id = :personId",
+        { personId }
+      )
+      .orderBy({
+          'minutes.createdAt': 'DESC',
+      })
+      .getMany();
   }
 
   // Add follow-ups to the latest minutes for the person

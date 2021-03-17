@@ -1,12 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm';
+import { Person } from 'src/persons/entities/person.entity';
+import { Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Minutes {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('int')
-  personId: number;
+  @ManyToOne(() => Person, person => person.minutes)
+  person: Person;
 
   @Column('text')
   newBusiness: string;
