@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm';
 
 @Entity()
 export class Minutes {
@@ -20,16 +20,9 @@ export class Minutes {
   @Column({ length: 500 })
   date: string;
 
-  @Column('timestamp', {
-    precision: 3,
-    default: () => 'CURRENT_TIMESTAMP(3)',
-    onUpdate: 'CURRENT_TIMESTAMP(3)',
-  })
+  @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column('timestamp', {
-    precision: 3,
-    default: () => 'CURRENT_TIMESTAMP(3)',
-  })
+  @CreateDateColumn()
   createdAt: Date;
 }

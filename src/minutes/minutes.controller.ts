@@ -5,19 +5,18 @@ import { AppendFollowUpsDto } from './dto/append-follow-ups.dto';
 import { PersonsService } from '../persons/persons.service';
 import { MinutesService } from './minutes.service';
 import { Minutes } from './entities/minutes.entity';
-import { IMinutes } from './interfaces/minutes.interface';
 
 @Controller('persons')
 export class MinutesController {
   constructor(private readonly minutesService: MinutesService) {}
 
   @Get(':personId/minutes/:minutesId')
-  findOne(@Param() params): Promise<IMinutes> {
+  findOne(@Param() params): Promise<Minutes> {
     return this.minutesService.findOne(params.minutesId);
   }
 
   @Get(':personId/minutes')
-  findAll(@Param() params): Promise<IMinutes[]> {
+  findAll(@Param() params): Promise<Minutes[]> {
     return this.minutesService.findAllForPerson(params.personId);
   }
 
