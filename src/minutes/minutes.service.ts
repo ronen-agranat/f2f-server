@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Minutes } from './entities/minutes.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -35,26 +35,36 @@ export class MinutesService {
     return this.minutesRepository.save(minutes);
   }
 
-  findOne(id: number): Promise<Minutes> {
-    return this.minutesRepository.findOne(id);
+  async findOne(id: number, userId: number): Promise<Minutes> {
+    const minutes = await this.minutesRepository.findOne(id);
+
+    // Cannot query minutes for another user
+    if (minutes.person.userId != userId) {
+      throw new ForbiddenException();
+    }
+
+    return minutes;
   }
 
-  findAllForPerson(personId: number): Promise<Minutes[]> {
+  async findAllForPerson(personId: number, userId: number): Promise<Minutes[]> {
     // Fetch minutes for person with minutes ordered by created date.
     // Wow, this is not pretty.
     // This is the best way to query a relation and have the relation be sorted.
     // Feature request open here: https://github.com/typeorm/typeorm/issues/2620
-    return this.minutesRepository.createQueryBuilder('minutes')
+    const minutes = await this.minutesRepository.createQueryBuilder('minutes')
       .leftJoinAndSelect(
-        "minutes",
         "minutes.person",
-        "minutes.person.id = :personId",
-        { personId }
+        "person"
       )
+      .where("person.id = :personId", { personId })
+      // Load minutes only for people belonging to this user
+      .andWhere("person.userId = :userId", { userId })
       .orderBy({
           'minutes.createdAt': 'DESC',
       })
       .getMany();
+
+    return minutes;
   }
 
   // Add follow-ups to the latest minutes for the person

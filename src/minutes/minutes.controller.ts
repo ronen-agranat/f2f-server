@@ -1,23 +1,30 @@
-import { Controller, Get, Post, Param, Body, Put } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Put, Request, UseGuards } from '@nestjs/common';
 import { CreateMinutesDto } from './dto/create-minutes.dto';
 import { UpdateMinutesDto } from './dto/update-minutes.dto';
 import { AppendFollowUpsDto } from './dto/append-follow-ups.dto';
 import { PersonsService } from '../persons/persons.service';
 import { MinutesService } from './minutes.service';
 import { Minutes } from './entities/minutes.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('persons')
 export class MinutesController {
   constructor(private readonly minutesService: MinutesService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get(':personId/minutes/:minutesId')
-  findOne(@Param() params): Promise<Minutes> {
-    return this.minutesService.findOne(params.minutesId);
+  findOne(@Request() req, @Param() params): Promise<Minutes> {
+    const userId = Number(req.user.id);
+
+    return this.minutesService.findOne(params.minutesId, userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':personId/minutes')
-  findAll(@Param() params): Promise<Minutes[]> {
-    return this.minutesService.findAllForPerson(params.personId);
+  findAll(@Request() req, @Param() params): Promise<Minutes[]> {
+    const userId = Number(req.user.id);
+  
+    return this.minutesService.findAllForPerson(params.personId, userId);
   }
 
   @Post(':personId/minutes/latest/follow-ups/append')
