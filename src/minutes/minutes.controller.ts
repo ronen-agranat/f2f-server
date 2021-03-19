@@ -27,14 +27,19 @@ export class MinutesController {
     return this.minutesService.findAllForPerson(params.personId, userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post(':personId/minutes/latest/follow-ups/append')
-  appendFollowUps(@Param() params, @Body() appendFollowUpsDto: AppendFollowUpsDto): Promise<Minutes> {
-    return this.minutesService.appendFollowUps(Number(params.personId), appendFollowUpsDto.textToAppend);
+  appendFollowUps(@Request() req, @Param() params, @Body() appendFollowUpsDto: AppendFollowUpsDto): Promise<Minutes> {
+    const userId = Number(req.user.id);
+
+    return this.minutesService.appendFollowUps(Number(params.personId), appendFollowUpsDto.textToAppend, userId);
   }
 
   @Post(':personId/minutes/latest/next-time/append')
-  appendNextTime(@Param() params, @Body() appendFollowUpsDto: AppendFollowUpsDto): Promise<Minutes> {
-    return this.minutesService.appendNextTime(Number(params.personId), appendFollowUpsDto.textToAppend);
+  appendNextTime(@Request() req, @Param() params, @Body() appendFollowUpsDto: AppendFollowUpsDto): Promise<Minutes> {
+    const userId = Number(req.user.id);
+
+    return this.minutesService.appendNextTime(Number(params.personId), appendFollowUpsDto.textToAppend, userId);
   }
 
   @Put(':personId/minutes/:minutesId')

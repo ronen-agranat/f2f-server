@@ -68,9 +68,10 @@ export class MinutesService {
   }
 
   // Add follow-ups to the latest minutes for the person
-  async appendFollowUps(personId: number, text: string): Promise<Minutes> {
+  async appendFollowUps(personId: number, text: string, userId: number): Promise<Minutes> {
     // Find most recent minutes
     const minutes = await this.minutesRepository.findOne({
+      relations: ['persons'],
       where: {
         personId,
       },
@@ -81,6 +82,10 @@ export class MinutesService {
 
     // Bail out if no minutes found
     if (!minutes) { return null; }
+
+    if (minutes.person.userId !== personId) {
+      throw new ForbiddenException();
+    }
 
     // Append text to follow-ups
     minutes.followUps = minutes.followUps + '\n' + text;
@@ -90,9 +95,10 @@ export class MinutesService {
   }
 
   // Add follow-ups to the latest minutes for the person
-  async appendNextTime(personId: number, text: string): Promise<Minutes> {
+  async appendNextTime(personId: number, text: string, userId: number): Promise<Minutes> {
     // Find most recent minutes
     const minutes = await this.minutesRepository.findOne({
+      relations: ['persons'],
       where: {
         personId,
       },
@@ -103,6 +109,10 @@ export class MinutesService {
 
     // Bail out if no minutes found
     if (!minutes) { return null; }
+
+    if (minutes.person.userId !== personId) {
+      throw new ForbiddenException();
+    }
 
     // Append text to next time
     minutes.nextTime = minutes.nextTime + '\n' + text;
