@@ -15,23 +15,39 @@ export class MinutesService {
     private readonly personRepository: Repository<Person>
   ) {}
 
-  async create(personId: number, minutesDto: CreateMinutesDto): Promise<Minutes> {
+  async create(personId: number, minutesDto: CreateMinutesDto, userId: number): Promise<Minutes> {
     const minutes = new Minutes();
+
+    const person = await this.personRepository.findOne(personId);
+
+    if (person.userId !== userId) {
+      throw new ForbiddenException();
+    }
+
     minutes.newBusiness = minutesDto.newBusiness;
     minutes.nextTime = minutesDto.nextTime;
     minutes.followUps = minutesDto.followUps;
     minutes.date = minutesDto.date;
-    minutes.person = personId as any;
+    minutes.person = person;
 
     return this.minutesRepository.save(minutes);
   }
 
-  async update(id: number, minutesDto: UpdateMinutesDto): Promise<Minutes> {
-    const minutes = await this.minutesRepository.findOne(minutesDto.id);
+  async update(id: number, minutesDto: UpdateMinutesDto, userId: number): Promise<Minutes> {
+    const minutes = await this.minutesRepository.findOne({
+      where: { id: minutesDto.id },
+      relations: ['person']
+    });
+
+    if (minutes.person.userId !== userId) {
+      throw new ForbiddenException();
+    }
+
     minutes.newBusiness = minutesDto.newBusiness;
     minutes.nextTime = minutesDto.nextTime;
     minutes.followUps = minutesDto.followUps;
     minutes.date = minutesDto.date;
+
     return this.minutesRepository.save(minutes);
   }
 

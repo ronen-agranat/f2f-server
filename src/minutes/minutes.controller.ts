@@ -43,13 +43,19 @@ export class MinutesController {
     return this.minutesService.appendNextTime(Number(params.personId), appendFollowUpsDto.textToAppend, userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':personId/minutes/:minutesId')
-  updateMinutes(@Param() params, @Body() updateMinutesDto: UpdateMinutesDto): Promise<Minutes> {
-    return this.minutesService.update(params.minutesId, updateMinutesDto);
+  updateMinutes(@Request() req, @Param() params, @Body() updateMinutesDto: UpdateMinutesDto): Promise<Minutes> {
+    const userId = Number(req.user.id);
+
+    return this.minutesService.update(params.minutesId, updateMinutesDto, userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post(':personId/minutes')
-  create(@Param() params, @Body() createMinutesDto: CreateMinutesDto): Promise<Minutes> {
-    return this.minutesService.create(Number(params.personId), createMinutesDto);
+  create(@Request() req, @Param() params, @Body() createMinutesDto: CreateMinutesDto): Promise<Minutes> {
+    const userId = Number(req.user.id);
+
+    return this.minutesService.create(Number(params.personId), createMinutesDto, userId);
   }
 }
