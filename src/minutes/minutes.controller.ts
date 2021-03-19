@@ -35,6 +35,7 @@ export class MinutesController {
     return this.minutesService.appendFollowUps(Number(params.personId), appendFollowUpsDto.textToAppend, userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post(':personId/minutes/latest/next-time/append')
   appendNextTime(@Request() req, @Param() params, @Body() appendFollowUpsDto: AppendFollowUpsDto): Promise<Minutes> {
     const userId = Number(req.user.id);
