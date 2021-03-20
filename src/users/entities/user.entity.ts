@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -10,7 +11,15 @@ export class User {
 
   // Do not share hashed password!
   @Column({ length: 500 })
+  @Exclude()
   hashedPassword: string;
+
+  @Column({
+    nullable: true
+  })
+  // FIXME: Exclude() does not appear to be doing diddly squat
+  @Exclude()
+  public currentHashedRefreshToken?: string;
 
   @Column({ length: 50 })
   name: string;

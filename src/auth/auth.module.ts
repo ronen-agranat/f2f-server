@@ -11,9 +11,10 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     UsersModule,
     PassportModule,
+    // FIXME: Why is access token secret specified in so many places?
     JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: jwtConstants.expiresIn },
+      secret: jwtConstants.accessTokenSecret,
+      signOptions: { expiresIn: jwtConstants.accessTokenExpiresIn },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

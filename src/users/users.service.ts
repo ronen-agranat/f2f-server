@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CryptConstants } from '../crypt/constants';
+import { jwtConstants } from 'src/auth/constants';
+import { Person } from 'src/persons/entities/person.entity';
 
 @Injectable()
 export class UsersService {
@@ -34,6 +36,7 @@ export class UsersService {
 
     // Hashed password never leaves here
     delete newUser.hashedPassword;
+    delete newUser.currentHashedRefreshToken;
     return newUser;
   }
 
@@ -45,7 +48,8 @@ export class UsersService {
     }
 
     // Hashed password never leaves here
-    delete user.hashedPassword
+    delete user.hashedPassword;
+    delete user.currentHashedRefreshToken;
     return user;
   }
 
@@ -57,12 +61,16 @@ export class UsersService {
 
       if (passwordsMatch) {
         delete user.hashedPassword;
+        delete user.currentHashedRefreshToken;
+
         return user;
       }
     }
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    // TODO: Consider user repository update() method
+
     const user = await this.userRepository.findOne(id);
 
     if (user) {
@@ -75,8 +83,17 @@ export class UsersService {
       const savedUser = await this.userRepository.save(user);
 
       delete savedUser.hashedPassword;
+      delete savedUser.currentHashedRefreshToken;
+
       return savedUser;
     }
+  }
+
+  async setCurrentRefreshToken(userId: number, refreshToken: string) {
+    const currentHashedRefreshToken = await bcrypt.hash(refreshToken, CryptConstants.saltRounds);
+    await this.userRepository.update(userId, {
+      currentHashedRefreshToken
+    });
   }
 
   async all(): Promise<User[]> {
@@ -84,6 +101,8 @@ export class UsersService {
 
     return users.map((user) => {
       delete user.hashedPassword;
+      delete user.currentHashedRefreshToken;
+      
       return user;
     });
   }

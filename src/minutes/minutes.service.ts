@@ -34,6 +34,8 @@ export class MinutesService {
   }
 
   async update(id: number, minutesDto: UpdateMinutesDto, userId: number): Promise<Minutes> {
+    // TODO: Consider user repository update() method
+
     const minutes = await this.minutesRepository.findOne({
       where: { id: minutesDto.id },
       relations: ['person']
