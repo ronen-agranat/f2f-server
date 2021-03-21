@@ -6,6 +6,7 @@ import { UsersService } from 'src/users/users.service';
 
 
 @Injectable()
+// TODO: How does this strategy end up getting named 'jwt' so that it is accessible as such from the guard?
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private usersService: UsersService) {
     // JWT extraction is handled for us
@@ -13,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       // FIXME: Why is access token secret specified in so many places?
-      secretOrKey: process.env.JWT_ACCESS_TOKEN_SECRET
+      secretOrKey: jwtConstants.accessTokenSecret
     });
   }
 
