@@ -195,6 +195,34 @@
 			"response": []
 		},
 		{
+			"name": "Refresh",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvbmVuIiwic3ViIjoxLCJuYW1lIjoiUm9uZW4gQWdyYW5hdCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYxNjM1MTEzNCwiZXhwIjoxNjE2OTU1OTM0fQ.26oU2AhPjJy2nNpZZBUjUNYQWQI0T2HoNX5Zdh1GtfY\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3001/auth/refresh",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GET profile",
 			"request": {
 				"method": "GET",
