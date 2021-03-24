@@ -1,9 +1,10 @@
-import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards, Body } from '@nestjs/common';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { UsersService } from './users/users.service';
 import { JwtRefreshGuard } from './auth/jwt-refresh.guard';
+import { CreateUserDto } from './users/dto/create-user.dto';
 
 @Controller()
 export class AppController {
@@ -17,6 +18,25 @@ export class AppController {
     const { user } = req;
 
     // https://wanago.io/2020/09/21/api-nestjs-refresh-tokens-jwt/
+    const accessToken = await this.authService.generateAccessToken(user);
+    const refreshToken = await this.authService.generateRefreshToken(user);
+
+    await this.usersService.setCurrentRefreshToken(user.id, refreshToken);
+
+    return {
+      accessToken,
+      refreshToken
+    }
+  }
+
+  // No authentication required to create user
+  @Post('users')
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    // TODO: Move to Auth controller
+
+    const user = await this.usersService.create(createUserDto);
+
+    // TODO: Repeated code from login(...) method
     const accessToken = await this.authService.generateAccessToken(user);
     const refreshToken = await this.authService.generateRefreshToken(user);
 

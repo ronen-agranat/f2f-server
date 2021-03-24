@@ -7,13 +7,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
-
-  // No authentication required to create user
-  @Post()
-  createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.create(createUserDto);
-  }
+  constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
@@ -25,7 +19,7 @@ export class UsersController {
       throw new ForbiddenException();
     }
 
-    return this.userService.update(userId, updateUserDto);
+    return this.usersService.update(userId, updateUserDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -36,6 +30,6 @@ export class UsersController {
       throw new ForbiddenException();
     }
 
-    return this.userService.all();
+    return this.usersService.all();
   }
 }
